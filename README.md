@@ -6,7 +6,17 @@
 
 This project is to audit Kolide instances by exploiting the API provided by Kolide. 
 
+If you don't know about [Kolide](https://www.kolide.com) then, it's never too late to learn about this awesome product based on [osquery](https://www.osquery.io).
+
+In short, osquery is an OS instrumentation framework for that exposes an OS as a high-performance relational database. This allows you to write SQL queries to explore operating system data. 
+
+And, Kolide is a front-end for efficiently deploying osquery across multiple endpoints. Also, that UI is love.
+
+## Motivation
+
 Motivation for this project is to monitor your Kolide instance by looking at any tamperings or un-authorized use like adding of a new unknown device, or running of queries by new actors.
+
+Compromise of your Kolide means, now the adversary has a high performance framework available for reconnaisance.
 
 ## Requirements
 
