@@ -4,7 +4,9 @@
 
 ## Description
 
-This project is to audit Kolide instances by exploiting the API provided by Kolide. Motivation for this project is to monitor your Kolide instance by looking at any tamperings or un-authorized use like adding of a new unknown device, or running of malicious queries.
+This project is to audit Kolide instances by exploiting the API provided by Kolide. 
+
+Motivation for this project is to monitor your Kolide instance by looking at any tamperings or un-authorized use like adding of a new unknown device, or running of queries by new actors.
 
 ## Requirements
 
@@ -16,7 +18,10 @@ pip3 install requests
 
 ### Testing
 
-Add your Kolide Access Token in the script before running the project.
+This project requires three values to be set before running:
+- Add your Kolide Access Token
+- Add a list of valid users
+- Add a list of valid locations
 
 ```sh
 python3 third_eye.py
