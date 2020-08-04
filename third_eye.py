@@ -1,3 +1,4 @@
+import csv
 import requests
 
 # Kolide API Reference: https://kolidek2.readme.io/docs
@@ -15,6 +16,20 @@ def fetch_devices():
     data = response.json().get('data')
     print('Total number of devices enrolled: {}\n'.format(len(data)))
     for device in data:
+        with open('Devices.txt', 'a') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(['Device ID: {}\nDevice Name: {}\n'
+            'Platform: {}\nOS: {}\n'
+            'Enrolled At: {}\nLast Seen At: {}\n'
+            'Primary User: {}\nRemote IP: {}\n\n'
+            'Location: {}'.format(device.get('id'), device.get('name'),
+            device.get('platform'), device.get('operating_system'),
+            device.get('enrolled_at'), device.get('last_seen_at'),
+            device.get('primary_user_name'), device.get('remote_ip'),
+            device.get('location'))])
+    
+    '''
+    for device in data:
         print('Device ID: {}'.format(device.get('id')),
               'Device Name: {}'.format(device.get('name')), 
               'Platform: {}'.format(device.get('platform')), 
@@ -24,7 +39,7 @@ def fetch_devices():
               'Primary User: {}'.format(device.get('primary_user_name')),
               'Remote IP: {}'.format(device.get('remote_ip')),
               'Location: {}'.format(device.get('location')), 
-              '', sep='\n')
+              '', sep='\n')'''
 
 def fetch_live_queries():
     K2_LIVE_QUERY_URL = 'https://k2.kolide.com/api/v0/live_queries'
@@ -32,8 +47,22 @@ def fetch_live_queries():
 
     data = response.json().get('data')
     print('Total number of live queries: {}'.format(len(data)))
+    
+    # Write header
+    with open('SQL_Queries.csv', 'a') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(['Query Name', 'Query', 'Created At', 
+                         'Tables Used', 'Author Name', 'Author Email'])
+
     for query in data:
-        # print(query.get('name'), query.get('osquery_sql'))
+        with open('Queries.csv', 'a') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow([query.get('name'), 
+                             query.get('osquery_sql'),
+                             query.get('created_at'),
+                             ', '.join(query.get('tables_used')),
+                             query.get('author').get('name'),
+                             query.get('author').get('email')])
         
 def print_banner():
     banner = '''                                        ,   ,
@@ -83,6 +112,6 @@ https://asciiart.website
 '''
     print(banner)
 
-# fetch_devices()
-#print_banner()
+print_banner()
+fetch_devices()
 fetch_live_queries()
