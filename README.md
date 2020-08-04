@@ -23,6 +23,6 @@ python3 third_eye.py
 ## TODO
 
 - [x] Audit enrolled devices
-- [ ] Audit live queries
-- [ ] Audit API usage
+- [x] Audit live queries
+- [x] Fetch Audit logs
 - [ ] Visualize live query and API usage statistics  
