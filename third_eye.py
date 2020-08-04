@@ -5,7 +5,7 @@ from datetime import datetime
 
 # Kolide API Reference: https://kolidek2.readme.io/docs
 
-ACCESS_TOKEN = ''
+ACCESS_TOKEN = ''   # <-- Add Your Kolide access token here!!
 header = {'Authorization': 'Bearer {}'.format(ACCESS_TOKEN)}
 
 
