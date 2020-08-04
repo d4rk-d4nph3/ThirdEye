@@ -1,16 +1,16 @@
 import csv
 import requests
 
+from datetime import datetime
+
 # Kolide API Reference: https://kolidek2.readme.io/docs
-# curl -H "Authorization: Bearer $MYTOKEN" -X GET 'https://k2.kolide.com/api/v0/devices'
 
 ACCESS_TOKEN = ''
-K2_DEVICES_URL = 'https://k2.kolide.com/api/v0/devices'
-
 header = {'Authorization': 'Bearer {}'.format(ACCESS_TOKEN)}
 
 
 def fetch_devices():
+    K2_DEVICES_URL = 'https://k2.kolide.com/api/v0/devices'
     response = requests.get(K2_DEVICES_URL, headers=header)
     
     data = response.json().get('data')
@@ -27,19 +27,6 @@ def fetch_devices():
             device.get('enrolled_at'), device.get('last_seen_at'),
             device.get('primary_user_name'), device.get('remote_ip'),
             device.get('location'))])
-    
-    '''
-    for device in data:
-        print('Device ID: {}'.format(device.get('id')),
-              'Device Name: {}'.format(device.get('name')), 
-              'Platform: {}'.format(device.get('platform')), 
-              'OS: {}'.format(device.get('operating_system')),
-              'Enrolled At: {}'.format(device.get('enrolled_at')),
-              'Last Seen At: {}'.format(device.get('last_seen_at')),
-              'Primary User: {}'.format(device.get('primary_user_name')),
-              'Remote IP: {}'.format(device.get('remote_ip')),
-              'Location: {}'.format(device.get('location')), 
-              '', sep='\n')'''
 
 def fetch_live_queries():
     K2_LIVE_QUERY_URL = 'https://k2.kolide.com/api/v0/live_queries'
@@ -63,7 +50,24 @@ def fetch_live_queries():
                              ', '.join(query.get('tables_used')),
                              query.get('author').get('name'),
                              query.get('author').get('email')])
-        
+
+def fetch_audit_logs():
+    K2_AUDIT_LOG_URL = 'https://k2.kolide.com/api/v0/audit_logs'
+    response = requests.get(K2_AUDIT_LOG_URL, headers=header)
+
+    data = response.json().get('data')
+    print('Total number of audit logs: {}'.format(len(data)))
+    
+    with open('Audit Logs.csv', 'a') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(['ID', 'Timestamp', 'Actor Name', 'Description'])
+
+    for log in data:
+        with open('Audit Logs.csv', 'a') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow([log.get('id'), log.get('timestamp'), 
+                             log.get('actor_name'), log.get('description')])
+
 def print_banner():
     banner = '''                                        ,   ,
                                         $,  $,     ,
@@ -115,3 +119,4 @@ https://asciiart.website
 print_banner()
 fetch_devices()
 fetch_live_queries()
+fetch_audit_logs()
