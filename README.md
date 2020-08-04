@@ -33,4 +33,6 @@ For normal use, clone this repository and create a scheduled task to run this pr
 - [x] Audit enrolled devices
 - [x] Audit live queries
 - [x] Fetch Audit logs
+- [ ] Detect queries by new authors
+- [ ] Detect abonormality in location
 - [ ] Visualize live query and API usage statistics
