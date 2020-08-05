@@ -1,7 +1,7 @@
 # ThirdEye
 [![osquery](https://img.shields.io/static/v1?label=osquery&message=kolide&color=blueviolet)](https://www.osquery.io)
 [![osquery](https://img.shields.io/static/v1?label=made%20with&message=python%203&color=blue)](https://www.osquery.io)
-![image](https://user-images.githubusercontent.com/61026070/89406689-45aa7f80-d73d-11ea-97fb-5599e0bf8e4d.png)
+![image](https://user-images.githubusercontent.com/61026070/89406881-8dc9a200-d73d-11ea-8c3d-edee33e6e184.png)
 
 ## Description
 
