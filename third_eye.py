@@ -6,7 +6,7 @@ from datetime import datetime
 # Kolide API Reference: https://kolidek2.readme.io/docs
 
 # Manually set these values before running
-ACCESS_TOKEN = ''  # <-- Add Your Kolide access token here!!
+ACCESS_TOKEN = 'e83c7ac603c09cf713c1d7de0cbd8473c90950ad2262603263e6519fa078ff6c'  # <-- Add Your Kolide access token here!!
 USERS = []         # <-- Add Valid Users with access to Kolide
 LOCATIONS = []     # <-- Add Valid locations
 
@@ -24,12 +24,11 @@ def fetch_devices():
     
     data = response.json().get('data')
 
-    with open('Devices.txt', 'w') as csvfile:
-        writer = csv.writer(csvfile)
-        writer.writerow(['Generated at: {}'.format(
-                        datetime.now().strftime("%I:%M %p, %a %b %d, %Y"))])
-        writer.writerow(['Total number of devices enrolled: {}\n'.format(
-                                                                len(data))])
+    with open('Devices.txt', 'w') as opfile:
+        opfile.write('Generated at: {}\n\n'.format(
+                        datetime.now().strftime("%I:%M %p, %a %b %d, %Y")))
+        opfile.write('Total number of devices enrolled: {}\n\n'.format(
+                                                                len(data)))
         
     for device in data:
         if device.get('location') not in LOCATIONS:
@@ -46,9 +45,8 @@ def fetch_devices():
                 writer.writerow(['Remote IP: {}\n'.format(
                                                     device.get('remote_ip'))])
 
-        with open('Devices.txt', 'a') as csvfile:
-            writer = csv.writer(csvfile)
-            writer.writerow(['Device ID: {}\nDevice Name: {}\n'
+        with open('Devices.txt', 'a') as opfile:
+            opfile.write('Device ID: {}\nDevice Name: {}\n'
             'Platform: {}\nOS: {}\n'
             'Enrolled At: {}\nLast Seen At: {}\n'
             'Primary User: {}\nRemote IP: {}\n'
@@ -56,7 +54,7 @@ def fetch_devices():
             device.get('platform'), device.get('operating_system'),
             device.get('enrolled_at'), device.get('last_seen_at'),
             device.get('primary_user_name'), device.get('remote_ip'),
-            device.get('location'))])
+            device.get('location')))
 
 def fetch_live_queries():
     K2_LIVE_QUERY_URL = 'https://k2.kolide.com/api/v0/live_queries'
@@ -130,5 +128,5 @@ def fetch_audit_logs():
                              log.get('actor_name'), log.get('description')])
 
 fetch_devices()
-fetch_live_queries()
-fetch_audit_logs()
+# fetch_live_queries()
+# fetch_audit_logs()

@@ -43,6 +43,24 @@ For normal use, clone this repository and create a scheduled task to run this pr
 
 ## Output
 
+### Enrolled Devices Summary
+
+```
+Generated at: 03:57 PM, Wed Aug 05, 2020
+
+Total number of devices enrolled: 1
+
+Device ID: 1102
+Device Name: Win07
+Platform: windows
+OS: Microsoft Windows 10 Pro Version: 10.0.19041 | UBR: 388
+Enrolled At: 2020-08-01T12:43:55.016Z
+Last Seen At: 2020-08-05T07:57:43.000Z
+Primary User: sam
+Remote IP: 8.8.8.8
+Location: China
+```
+
 ### New User Detected Alert
 
 ```
