@@ -31,7 +31,7 @@ pip3 install requests
 This project requires three values to be set before running:
 - Add your Kolide Access Token
 - Add a list of valid users
-- Add a list of valid locations
+- Add a list of valid locations (like United States, Sweden, etc)
 
 ```sh
 python3 third_eye.py
@@ -61,36 +61,22 @@ Remote IP: 8.8.8.8
 Location: China
 ```
 
-### New User Detected Alert
+### Live Query by New Author Detected Alert
 
 ```
-Alert ID: 1
-"Generated at: 02:53 PM, Tue Aug 04, 2020"
-New user detected: Sam
-"Running query: SELECT DISTINCT processes.name, processes.path, listening_ports.port FROM listening_ports
-JOIN processes USING (pid)
-WHERE listening_ports.family = 2
-AND listening_ports.address <> '127.0.0.1';"
-At: 2020-08-02T13:22:47.907Z
+alert_id=200 timestamp=04:49 PM, Wed Aug 05, 2020 log_ts=2020-08-02T07:21:19.503Z author=John query=SELECT pid, name, path, cmdline, parent FROM processes WHERE name = 'svchost.exe' AND cmdline not LIKE '% -k %'; message=Live query by new author detected
 ```
 
 ### New Device Location Detected Alert
 
 ```
-Alert ID: 10
-"Generated at: 02:59 PM, Tue Aug 04, 2020"
-New location detected: China
-For Device: Win10
-Remote IP: 104.22.88.112
+alert_id=100 timestamp=04:11 PM, Wed Aug 05, 2020 location=Russia device=Win10 remote_ip=100.44.116.43 message=New device location detected
 ```
 
 ### New Actor Detected in Audit Log Alert
 
 ```
-Alert ID: 12
-New actor detected in Audit Log: Julius
-At: 2020-08-02T16:50:25.386Z
-Description: CSV Downloaded For Device Win10 - Live Query Campaign ID 2624
+alert_id=200 timestamp=04:19 PM, Wed Aug 05, 2020 log_ts=2020-08-05T07:55:05.428Z actor=Kira message=New Actor detected in Audit Log
 ```
 
 ## TODO

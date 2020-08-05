@@ -6,9 +6,13 @@ from datetime import datetime
 # Kolide API Reference: https://kolidek2.readme.io/docs
 
 # Manually set these values before running
-ACCESS_TOKEN = 'e83c7ac603c09cf713c1d7de0cbd8473c90950ad2262603263e6519fa078ff6c'  # <-- Add Your Kolide access token here!!
+ACCESS_TOKEN = ''  # <-- Add Your Kolide access token here!!
 USERS = []         # <-- Add Valid Users with access to Kolide
 LOCATIONS = []     # <-- Add Valid locations
+
+NEW_DEV_ALERT_ID = 100
+NEW_USER_ALERT_ID = 200
+NEW_ACTOR_ALERT_ID = 300
 
 header = {'Authorization': 'Bearer {}'.format(ACCESS_TOKEN)}
 alert_count = 0
@@ -33,17 +37,20 @@ def fetch_devices():
     for device in data:
         if device.get('location') not in LOCATIONS:
             with open('Alert.txt', 'a') as alertfile:
-                writer = csv.writer(alertfile)
                 global alert_count
                 alert_count += 1
-                writer.writerow(['Alert ID: {}'.format(alert_count)])
-                writer.writerow(['Generated at: {}'.format(
-                        datetime.now().strftime("%I:%M %p, %a %b %d, %Y"))])
-                writer.writerow(['New location detected: {}'.format(
-                                                   device.get('location'))])
-                writer.writerow(['For Device: {}'.format(device.get('name'))])
-                writer.writerow(['Remote IP: {}\n'.format(
-                                                    device.get('remote_ip'))])
+                alertfile.write('alert_id={} '
+                                'timestamp={} '
+                                'location={} '
+                                'device={} '
+                                'remote_ip={} '
+                                'message=New device location detected\n'.format(
+                                    NEW_DEV_ALERT_ID, 
+                                    datetime.now().strftime("%I:%M %p, %a %b %d, %Y"),
+                                    device.get('location'),
+                                    device.get('name'),
+                                    device.get('remote_ip')
+                                ))
 
         with open('Devices.txt', 'a') as opfile:
             opfile.write('Device ID: {}\nDevice Name: {}\n'
@@ -62,7 +69,7 @@ def fetch_live_queries():
     response = requests.get(K2_LIVE_QUERY_URL, headers=header)
 
     data = response.json().get('data')
-    print('Total number of live queries: {}'.format(len(data)))
+    # print('Total number of live queries: {}'.format(len(data)))
     
     # Write header
     with open('Queries.csv', 'w') as csvfile:
@@ -75,17 +82,20 @@ def fetch_live_queries():
     for query in data:
         if query.get('author').get('name') not in USERS:
             with open('Alert.txt', 'a') as alertfile:
-                writer = csv.writer(alertfile)
                 global alert_count
                 alert_count += 1
-                writer.writerow(['Alert ID: {}'.format(alert_count)])
-                writer.writerow(['Generated at: {}'.format(
-                        datetime.now().strftime("%I:%M %p, %a %b %d, %Y"))])
-                writer.writerow(['New user detected: {}'.format(
-                                          query.get('author').get('name'))])
-                writer.writerow(['Running query: {}'.format(
-                                                 query.get('osquery_sql'))])
-                writer.writerow(['At: {}\n'.format(query.get('created_at'))])
+                alertfile.write('alert_id={} '
+                                'timestamp={} '
+                                'log_ts={} '
+                                'author={} '
+                                'query={} '
+                                'message=Live query by new user detected\n'.format(
+                                    NEW_USER_ALERT_ID, 
+                                    datetime.now().strftime("%I:%M %p, %a %b %d, %Y"),
+                                    query.get('created_at'),
+                                    query.get('author').get('name'),
+                                    query.get('osquery_sql')
+                                    ))
 
         with open('Queries.csv', 'a') as csvfile:
             writer = csv.writer(csvfile)
@@ -101,7 +111,7 @@ def fetch_audit_logs():
     response = requests.get(K2_AUDIT_LOG_URL, headers=header)
 
     data = response.json().get('data')
-    print('Total number of audit logs: {}'.format(len(data)))
+    # print('Total number of audit logs: {}'.format(len(data)))
     
     with open('Audit Logs.csv', 'w') as csvfile:
         writer = csv.writer(csvfile)
@@ -112,21 +122,24 @@ def fetch_audit_logs():
     for log in data:
         if log.get('actor_name') not in USERS:
             with open('Alert.txt', 'a') as alertfile:
-                writer = csv.writer(alertfile)
                 global alert_count
                 alert_count += 1
-                writer.writerow(['Alert ID: {}'.format(alert_count)])
-                writer.writerow(['New actor detected in Audit Log: {}'.format(
-                                                       log.get('actor_name'))])
-                writer.writerow(['At: {}'.format(log.get('timestamp'))])
-                writer.writerow(['Description: {}\n'.format(
-                                                      log.get('description'))])
+                alertfile.write('alert_id={} '
+                                'timestamp={} '
+                                'log_ts={} '
+                                'actor={} '
+                                'message=New Actor detected in Audit Log\n'.format(
+                                    NEW_ACTOR_ALERT_ID, 
+                                    datetime.now().strftime("%I:%M %p, %a %b %d, %Y"),
+                                    log.get('timestamp'),
+                                    log.get('actor_name')
+                                    ))
 
         with open('Audit Logs.csv', 'a') as csvfile:
             writer = csv.writer(csvfile)
             writer.writerow([log.get('id'), log.get('timestamp'), 
                              log.get('actor_name'), log.get('description')])
 
-fetch_devices()
-# fetch_live_queries()
+# fetch_devices()
+fetch_live_queries()
 # fetch_audit_logs()
